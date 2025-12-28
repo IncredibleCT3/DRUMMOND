@@ -1,0 +1,42 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: 'Impact', sans-serif;
+}
+
+button {
+  background: none;
+  border: none;
+}
+:root {
+  /* brand colors */
+  --pistons-red: #c8102e;
+  --pistons-blue: #1d42ba;
+  
+  /* background colors */
+  --bg-primary: #111827;
+  --bg-secondary: #1f2937;
+  --bg-tertiary: #374151;
+  
+  /* border colors */
+  --border-primary: #374151;
+  --border-secondary: #4b5563;
+  
+  /* text colors */
+  --text-primary: #ffffff;
+  --text-secondary: #9ca3af;
+  --text-tertiary: #6b7280;
+  --text-disabled: #4b5563;
+  
+  /* utility colors */
+  --black: #000000;
+  --white: #ffffff;
+  
+  /* opacity variants */
+  --overlay-light: rgba(0, 0, 0, 0.9);
+  --overlay-dark: rgba(0, 0, 0, 0.95);
+  --shadow-inset: rgba(0, 0, 0, 0.5);
+  --shadow-text: rgba(0, 0, 0, 0.3);
+  --accent-red-light: rgba(200, 16, 46, 0.3);
+}
