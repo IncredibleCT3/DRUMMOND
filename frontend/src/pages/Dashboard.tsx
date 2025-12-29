@@ -1,3 +1,4 @@
+import "../css/Dashboard.css"
 function Dashboard() {
     return <>
         <div className = "dashboard-main-content">
@@ -7,7 +8,7 @@ function Dashboard() {
                     <p className = "title-game">STARTING 5 BATTLES</p>
                     <button>LOG OUT</button>
                 </div>
-                <hr></hr>
+                <hr className="dashboard-hr"></hr>
 
                 <div className="high-scores-container">
                     <p className = "high-score-this-week-textview">HIGH SCORES THIS WEEK</p>
