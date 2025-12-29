@@ -4,9 +4,9 @@ function Dashboard() {
         <div className = "dashboard-main-content">
             <div className="dashboard-content">
 
-                <div className="title-and-logout-container">
+                <div className="title-and-menu-container">
                     <p className = "title-game">STARTING 5 BATTLES</p>
-                    <button>LOG OUT</button>
+                    <button>BACK TO MENU</button>
                 </div>
                 <hr className="dashboard-hr"></hr>
 

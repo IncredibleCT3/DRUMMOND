@@ -13,7 +13,7 @@
     margin: 0 auto;
 }
 
-.title-and-logout-container {
+.title-and-menu-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -28,7 +28,7 @@
     margin: 0;
 }
 
-.title-and-logout-container button {
+.title-and-menu-container button {
     padding: 0.5rem 1rem;
     font-size: 0.75rem;
     font-weight: bold;
@@ -41,7 +41,7 @@
     transition: color 0.3s ease;
 }
 
-.title-and-logout-container button:hover {
+.title-and-menu-container button:hover {
     color: var(--text-primary);
 }
 
@@ -189,7 +189,7 @@
         text-shadow: 1.5px 1.5px 0px var(--pistons-blue);
     }
 
-    .title-and-logout-container button {
+    .title-and-menu-container button {
         font-size: 0.625rem;
         padding: 0.5rem 0.75rem;
     }
