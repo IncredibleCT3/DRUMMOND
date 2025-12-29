@@ -1,6 +1,15 @@
+import "../css/Login.css"
+import { useNavigate } from 'react-router-dom';
+
 function Login() {
+    const navigate = useNavigate();
+
+    function redirectToHome() {
+        navigate('/');
+    }
+
   return <>
-    <div className="main-content">
+    <div className="main-container">
         <div className="login-page-container">
 
             <div className="title-container">
@@ -13,19 +22,19 @@ function Login() {
 
                 <div className = "username-container">
                     <p className = "username-textview">Username</p>
-                    <input className="username"></input>
+                    <input className="username" type = "text"></input>
                 </div>
 
                 <div className = "password-container">
-                    <p className = "password-textview">Username</p>
-                    <input className="password"></input>
+                    <p className = "password-textview">Password</p>
+                    <input className="password" type = "password"></input>
                 </div>
 
                 <button className="enter-game-button">ENTER GAME</button>
 
                 <button className="create-account-button">CREATE ACCOUNT</button>
 
-                <button className="back-to-menu-button">BACK TO MENU</button>
+                <button className="back-to-menu-button" onClick={redirectToHome}>BACK TO MENU</button>
 
 
             </div>
