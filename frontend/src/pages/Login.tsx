@@ -1,11 +1,17 @@
 import "../css/Login.css"
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react'
 
 function Login() {
     const navigate = useNavigate();
+    const [isCreatingAccount, setIsCreatingAccount] = useState(false);
 
     function redirectToHome() {
         navigate('/');
+    }
+
+    function toggleAccountMode() {
+        setIsCreatingAccount(!isCreatingAccount);
     }
 
   return <>
@@ -18,7 +24,9 @@ function Login() {
             </div>
 
             <div className = "login-container">
-                <div className="login-textview">LOGIN</div>
+                <div className="login-textview">
+                    {isCreatingAccount ? 'CREATE ACCOUNT' : 'LOGIN'}
+                </div>
 
                 <div className = "username-container">
                     <p className = "username-textview">Username</p>
@@ -30,9 +38,20 @@ function Login() {
                     <input className="password" type = "password"></input>
                 </div>
 
-                <button className="enter-game-button">ENTER GAME</button>
+                {isCreatingAccount && (
+                    <div className="password-container">
+                        <p className="password-textview">Confirm Password</p>
+                        <input className="password" type="password"></input>
+                    </div>
+                )}
 
-                <button className="create-account-button">CREATE ACCOUNT</button>
+                <button className="enter-game-button"> 
+                    {isCreatingAccount ? 'CREATE ACCOUNT' : 'ENTER GAME'}
+                </button>
+
+                <button className="create-account-button" onClick={toggleAccountMode}>
+                    {isCreatingAccount ? 'BACK TO LOGIN' : 'CREATE ACCOUNT'}
+                </button>
 
                 <button className="back-to-menu-button" onClick={redirectToHome}>BACK TO MENU</button>
 
