@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace backend.Models
+namespace backend.Dtos.Team
 {
-    public class Team
+    public class CreateTeamDto
     {
-        public int Id { get; set; }
+        [JsonPropertyName("id")]
         public int TeamId { get; set; }
         public string? Conference { get; set; } = string.Empty;
         public string? Division { get; set; } = string.Empty;
