@@ -14,6 +14,7 @@ namespace backend.Dtos.Team
         public string? Division { get; set; } = string.Empty;
         public string? City { get; set; } = string.Empty;
         public string? Name { get; set; } = string.Empty;
+        [JsonPropertyName("full_name")]
         public string? FullName { get; set; } = string.Empty;
         public string? Abbreviation { get; set; } = string.Empty;
     }

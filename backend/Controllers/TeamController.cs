@@ -67,9 +67,26 @@ namespace backend.Controllers
                     Abbreviation = teamDto.Abbreviation
                 };
                 await _context.Team.AddAsync(team);
-                await _context.SaveChangesAsync();
             }
+            await _context.SaveChangesAsync();
             return Ok(teamsResponse);
+        }
+
+        [HttpDelete("delete-all")]
+        public async Task<IActionResult> DeleteAll()
+        {
+            var players = await _context.Player.ToListAsync();
+            _context.Player.RemoveRange(players);
+
+            var teams = await _context.Team.ToListAsync();
+            _context.Team.RemoveRange(teams);
+
+            await _context.SaveChangesAsync();
+
+            await _context.Database.ExecuteSqlRawAsync("ALTER TABLE Player AUTO_INCREMENT = 1");
+            await _context.Database.ExecuteSqlRawAsync("ALTER TABLE Team AUTO_INCREMENT = 1");
+
+            return Ok(new { message = "All teams and players deleted successfully", teamsDeleted = teams.Count, playersDeleted = players.Count });
         }
 
     }
