@@ -8021,31 +8021,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ct3pi\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "/Users/ct3/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ct3pi\\OneDrive\\Documentos\\DRUMMOND\\backend\\backend.csproj",
+      "projectUniqueName": "/Users/ct3/Documents/DRUMMOND/backend/backend.csproj",
       "projectName": "backend",
-      "projectPath": "C:\\Users\\ct3pi\\OneDrive\\Documentos\\DRUMMOND\\backend\\backend.csproj",
-      "packagesPath": "C:\\Users\\ct3pi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ct3pi\\OneDrive\\Documentos\\DRUMMOND\\backend\\obj\\",
+      "projectPath": "/Users/ct3/Documents/DRUMMOND/backend/backend.csproj",
+      "packagesPath": "/Users/ct3/.nuget/packages/",
+      "outputPath": "/Users/ct3/Documents/DRUMMOND/backend/obj/",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\ct3pi\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/ct3/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -8063,8 +8056,7 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      },
-      "SdkAnalysisLevel": "9.0.300"
+      }
     },
     "frameworks": {
       "net8.0": {
@@ -8118,7 +8110,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.414/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
