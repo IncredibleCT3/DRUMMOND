@@ -8,7 +8,7 @@ namespace backend.Data.Repositories
 {
     public interface ILeaderboard
     {
-        Task<User> GetAllUsers();
-        Task<User> GetUser(int id);
+        Task<IEnumerable<User>> GetAllUsersData();
+        Task<IEnumerable<User>> GetUserData(int id);
     }
 }

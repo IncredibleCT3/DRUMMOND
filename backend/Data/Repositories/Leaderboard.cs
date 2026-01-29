@@ -16,10 +16,22 @@ namespace backend.Data.Repositories
             _database = database;
         }
 
-        private async Task<IEnumerable<User>> GetAllUsers()
+        public async Task<IEnumerable<User>> GetAllUsersData()
         {
             var sql = "SELECT * FROM leaderboard";
             using var connection = _database.GetConnection();
             return await connection.QueryAsync<User>(sql);           
         }
+
+        public async Task<IEnumerable<User>> GetUserData(int id)
+        {
+            var sql = @$"
+            SELECT * FROM leaderboard
+            WHERE id = {id}
+            ";
+
+            using var connection = _database.GetConnection();
+            return (await connection.QueryAsync<User>(sql)).ToList();
+        }
+    }
 }
