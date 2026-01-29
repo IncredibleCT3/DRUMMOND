@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using backend.Models;
 using Dapper;
+using Microsoft.AspNetCore.Http;
 
 namespace backend.Data.Repositories
 {
@@ -23,7 +20,7 @@ namespace backend.Data.Repositories
             return await connection.QueryAsync<User>(sql);           
         }
 
-        public async Task<IEnumerable<User>> GetUserData(int id)
+        public async Task<User> GetUserData(int id)
         {
             var sql = @$"
             SELECT * FROM leaderboard
@@ -31,7 +28,7 @@ namespace backend.Data.Repositories
             ";
 
             using var connection = _database.GetConnection();
-            return (await connection.QueryAsync<User>(sql)).ToList();
+            return (await connection.QueryAsync<User>(sql)).FirstOrDefault();
         }
     }
 }

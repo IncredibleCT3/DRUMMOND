@@ -41,6 +41,12 @@ namespace backend.Controllers
             try
             {
                 var user = await _leaderboard.GetUserData(id);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
                 return Ok(user);
             }
             catch(Exception ex)
