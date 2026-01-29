@@ -8,8 +8,8 @@ namespace backend.Models
     public class User
     {
         public int Id { get; set; }
-        public string Username { get; set; } = string.Empty;
-        public string PasswordHash { get; set; } = string.Empty;
-        public int? HighestScoreStarting5 { get; set; }
+        public String Username { get; set; } = string.Empty;
+        public String Score { get; set; } = string.Empty;
+        public String Starting5 { get; set; } = string.Empty;
     }
 }

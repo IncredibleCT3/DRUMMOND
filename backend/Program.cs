@@ -37,6 +37,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddSingleton(sp => new Database(connectionString));
 builder.Services.AddScoped<INbaPlayerRepository, NbaPlayerRepository>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
+builder.Services.AddScoped<ILeaderboard, Leaderboard>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
