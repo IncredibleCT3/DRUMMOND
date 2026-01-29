@@ -30,5 +30,16 @@ namespace backend.Data.Repositories
             using var connection = _database.GetConnection();
             return (await connection.QueryAsync<User>(sql)).FirstOrDefault();
         }
+
+        public async Task<User> DeleteUserData(int id)
+        {
+            var sql = @$"
+            DELETE FROM leaderboard
+            WHERE id = {id}
+            ";
+
+            using var connection = _database.GetConnection();
+            return (await connection.QueryAsync<User>(sql)).FirstOrDefault();
+        }
     }
 }

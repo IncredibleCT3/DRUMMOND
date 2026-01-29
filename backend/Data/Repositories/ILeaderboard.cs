@@ -10,5 +10,6 @@ namespace backend.Data.Repositories
     {
         Task<IEnumerable<User>> GetAllUsersData();
         Task<User> GetUserData(int id);
+        Task<User> DeleteUserData(int id);
     }
 }

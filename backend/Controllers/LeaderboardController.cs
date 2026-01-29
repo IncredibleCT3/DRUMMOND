@@ -54,5 +54,19 @@ namespace backend.Controllers
                 return StatusCode(500, $"Server error: {ex}");
             }
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            try
+            {
+                var user = await _leaderboard.DeleteUserData(id);
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, $"Server error: {ex}");
+            }
+        }
     }
 }
