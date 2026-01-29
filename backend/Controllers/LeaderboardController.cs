@@ -34,5 +34,19 @@ namespace backend.Controllers
                 return StatusCode(500, $"Server error: {ex}");
             }
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUser(int id)
+        {
+            try
+            {
+                var user = await _leaderboard.GetUserData(id);
+                return Ok(user);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, $"Server error: {ex}");
+            }
+        }
     }
 }
