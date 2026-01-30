@@ -69,6 +69,27 @@
     gap: 0.75rem;
     width: 100%;
     max-width: 600px;
+    max-height: 50vh;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.leaderboard-list::-webkit-scrollbar {
+    width: 10px;
+}
+
+.leaderboard-list::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+    border-radius: 5px;
+}
+
+.leaderboard-list::-webkit-scrollbar-thumb {
+    background: var(--pistons-blue);
+    border-radius: 5px;
+}
+
+.leaderboard-list::-webkit-scrollbar-thumb:hover {
+    background: var(--pistons-red);
 }
 
 .leaderboard-entry {
@@ -91,13 +112,15 @@
     border-radius: 4px;
     padding: 0.75rem 1.5rem;
     transition: border-color 0.3s ease;
+    display: flex;
+    justify-content: space-between;
 }
 
 .user-bar:hover {
     border-color: var(--pistons-blue);
 }
 
-.user-name {
+.user-name, .score {
     color: var(--text-primary);
     font-size: 1rem;
     text-transform: uppercase;

@@ -1,5 +1,5 @@
 import "../css/Leaderboard.css"
-import { use, useState } from "react";
+import { useState } from "react";
 import { useEffect } from "react";
 
 function Leaderboard() {
@@ -59,10 +59,11 @@ function Leaderboard() {
 
         <div className="leaderboard-list">
           {users.map((entry, index) => (
-            <div key={index+1} className="leaderboard-entry">
-              <span className="rank-number">{index+1})</span>
+            <div key={index} className="leaderboard-entry">
+              <span className="rank-number">{index+1}</span>
               <div className="user-bar">
                 <span className="user-name">{entry.username}</span>
+                <span className="score">{entry.score}</span>
               </div>
             </div>
           ))}
