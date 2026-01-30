@@ -1,6 +1,20 @@
 import "../css/Leaderboard.css"
+import { use, useState } from "react";
+import { useEffect } from "react";
 
 function Leaderboard() {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    async function loadUsers() {
+      const res = await fetch("http://localhost:5206/Leaderboard");
+      const data = await res.json();
+      setUsers(data);
+      console.log(data)
+    }
+    loadUsers();
+  }, []);
+
   // Sample data - replace with actual data from your backend
   const topPlayers = [
     { name: "Player 1", score: 100 },
@@ -28,7 +42,7 @@ function Leaderboard() {
       <div className="leaderboard-content">
         <p className="thanks-header">Thanks For Playing</p>
 
-        <div className="title-container">
+        <div>
           <h1 className="title">DRUMMOND</h1>
           <hr />
         </div>
@@ -44,11 +58,11 @@ function Leaderboard() {
         </div>
 
         <div className="leaderboard-list">
-          {leaderboardData.map((entry) => (
-            <div key={entry.rank} className="leaderboard-entry">
-              <span className="rank-number">{entry.rank})</span>
+          {users.map((entry, index) => (
+            <div key={index+1} className="leaderboard-entry">
+              <span className="rank-number">{index+1})</span>
               <div className="user-bar">
-                <span className="user-name">{entry.name}</span>
+                <span className="user-name">{entry.username}</span>
               </div>
             </div>
           ))}
