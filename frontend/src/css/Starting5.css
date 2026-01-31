@@ -149,8 +149,13 @@
 .position-content {
   flex: 1;
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
   align-items: center;
+  gap: 6px;
+}
+
+.position-content .player-points {
+  margin-left: auto;
 }
 
 .select-text {
@@ -345,8 +350,9 @@
   padding: 15px 20px;
   margin-bottom: 10px;
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
   align-items: center;
+  gap: 8px;
 }
 
 .final-lineup-item .position {
@@ -358,14 +364,21 @@
 
 .final-lineup-item .player-name {
   flex: 1;
+  min-width: 120px;
   color: var(--text-primary);
   font-size: 1rem;
+}
+
+.final-lineup-item .player-tags {
+  flex: 1;
+  justify-content: center;
 }
 
 .final-lineup-item .points {
   color: #28a745;
   font-weight: bold;
   font-size: 1.2rem;
+  margin-left: auto;
 }
 
 .play-again-button {
@@ -626,4 +639,29 @@
 
 .final-lineup-item.not-selected {
     opacity: 0.5;
+}
+
+.player-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid currentColor;
+}
+
+.tag:first-child {
+  color: var(--pistons-blue);
+}
+
+.tag:last-child {
+  color: var(--pistons-red);
 }
