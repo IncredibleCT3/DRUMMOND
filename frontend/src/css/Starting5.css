@@ -149,8 +149,13 @@
 .position-content {
   flex: 1;
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
   align-items: center;
+  gap: 6px;
+}
+
+.position-content .player-points {
+  margin-left: auto;
 }
 
 .select-text {
@@ -345,8 +350,9 @@
   padding: 15px 20px;
   margin-bottom: 10px;
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
   align-items: center;
+  gap: 8px;
 }
 
 .final-lineup-item .position {
@@ -358,14 +364,21 @@
 
 .final-lineup-item .player-name {
   flex: 1;
+  min-width: 120px;
   color: var(--text-primary);
   font-size: 1rem;
+}
+
+.final-lineup-item .player-tags {
+  flex: 1;
+  justify-content: center;
 }
 
 .final-lineup-item .points {
   color: #28a745;
   font-weight: bold;
   font-size: 1.2rem;
+  margin-left: auto;
 }
 
 .play-again-button {
@@ -434,27 +447,101 @@
   font-size: 1.1rem;
 }
 
+/* REPLACE your entire @media (max-width: 768px) block with this */
+
 @media (max-width: 768px) {
+  .game-container {
+    padding: 12px;
+  }
+
+  .game-header {
+    margin-bottom: 18px;
+  }
+
   .game-title {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+    text-shadow: 2px 2px 0px var(--pistons-blue), 5px 5px 0px rgba(0, 0, 0, 0.3);
+  }
+
+  .logout-button {
+    padding: 7px 14px;
+    font-size: 0.8rem;
+  }
+
+  .categories-box {
+    padding: 14px;
+    margin-bottom: 14px;
+  }
+
+  .categories-title {
+    font-size: 0.75rem;
+    margin-bottom: 10px;
   }
 
   .categories-content {
     grid-template-columns: 1fr;
-    gap: 15px;
+    gap: 10px;
+  }
+
+  .category-label {
+    font-size: 0.7rem;
+    margin-bottom: 4px;
+  }
+
+  .category-value,
+  .category-value-2 {
+    font-size: 1rem;
+  }
+
+  .score-box {
+    margin-bottom: 18px;
+  }
+
+  .score-label {
+    font-size: 0.75rem;
   }
 
   .score-value {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
+  }
+
+  .lineup-section {
+    gap: 10px;
   }
 
   .position-row {
-    padding: 15px;
+    padding: 12px 14px;
   }
 
   .position-label {
-    font-size: 1.2rem;
-    min-width: 60px;
+    font-size: 1.1rem;
+    min-width: 50px;
+  }
+
+  .position-content {
+    gap: 5px;
+  }
+
+  .position-content .player-name {
+    font-size: 0.9rem;
+  }
+
+  .position-content .player-points {
+    font-size: 1rem;
+  }
+
+  .select-text {
+    font-size: 0.85rem;
+  }
+
+  .player-tags {
+    gap: 4px;
+  }
+
+  .tag {
+    font-size: 0.55rem;
+    padding: 2px 5px;
+    letter-spacing: 0;
   }
 
   .modal-content {
@@ -462,12 +549,85 @@
     max-height: 90vh;
   }
 
+  .modal-header {
+    padding: 14px 16px;
+  }
+
+  .modal-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .search-box {
+    padding: 12px;
+  }
+
+  .search-input {
+    padding: 10px 12px;
+    font-size: 16px;
+  }
+
+  .player-item {
+    padding: 12px 14px;
+  }
+
+  .player-item .player-name {
+    font-size: 0.9rem;
+  }
+
+  .player-item .player-position {
+    font-size: 0.75rem;
+    padding: 3px 8px;
+  }
+
   .complete-screen {
-    padding: 20px;
+    padding: 20px 12px;
+    gap: 20px;
+  }
+
+  .final-score h2 {
+    font-size: 1rem;
   }
 
   .score-display {
-    font-size: 3rem;
+    font-size: 2.8rem;
+  }
+
+  .final-lineup h3 {
+    font-size: 1.2rem;
+    margin-bottom: 14px;
+  }
+
+  .final-lineup-item {
+    padding: 10px 12px;
+    gap: 6px;
+  }
+
+  .final-lineup-item .position {
+    font-size: 0.95rem;
+    min-width: 44px;
+  }
+
+  .final-lineup-item .player-name {
+    font-size: 0.85rem;
+    min-width: 80px;
+  }
+
+  .final-lineup-item .points {
+    font-size: 0.95rem;
+  }
+
+  .surrender-modal {
+    max-width: 90%;
+  }
+
+  .surrender-message {
+    font-size: 14px;
+  }
+
+  .surrender-cancel,
+  .surrender-confirm {
+    padding: 8px 16px;
+    font-size: 13px;
   }
 }
 
@@ -549,7 +709,6 @@
 
 .player-item:hover {
     background: #252525;
-    border-left: 3px solid #00ff88;
     padding-left: 17px;
 }
 
@@ -626,4 +785,29 @@
 
 .final-lineup-item.not-selected {
     opacity: 0.5;
+}
+
+.player-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid currentColor;
+}
+
+.tag:first-child {
+  color: var(--pistons-blue);
+}
+
+.tag:last-child {
+  color: var(--pistons-red);
 }

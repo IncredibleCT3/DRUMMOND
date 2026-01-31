@@ -318,7 +318,8 @@ function Starting5() {
                 ...lineup,
                 [selectedPosition]: {
                     ...player,
-                    points: data.points
+                    points: data.points,
+                    tags: { category1: criteria.category1, category2: criteria.category2 }
                 }
             };
             setLineup(newLineup);
@@ -392,6 +393,12 @@ function Starting5() {
                                     <span className="player-name">
                                         {player.firstName} {player.lastName}
                                     </span>
+                                    {player.tags && (
+                                        <div className="player-tags">
+                                            <span className="tag">{player.tags.category1}</span>
+                                            <span className="tag">{player.tags.category2}</span>
+                                        </div>
+                                    )}
                                     <span className="points">+{player.points}</span>
                                 </div>
                             ) : (
@@ -461,6 +468,12 @@ function Starting5() {
                                             <span className="player-name">
                                                 {lineup[position].firstName} {lineup[position].lastName}
                                             </span>
+                                            {lineup[position].tags && (
+                                                <div className="player-tags">
+                                                    <span className="tag">{lineup[position].tags.category1}</span>
+                                                    <span className="tag">{lineup[position].tags.category2}</span>
+                                                </div>
+                                            )}
                                             <span className="player-points">+{lineup[position].points}</span>
                                         </>
                                     ) : (
