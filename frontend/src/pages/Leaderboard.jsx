@@ -1,41 +1,31 @@
 import "../css/Leaderboard.css"
 import { useState } from "react";
 import { useEffect } from "react";
+import kingIcon from "../assets/king.svg";
 
 function Leaderboard() {
   const [users, setUsers] = useState([]);
+  const [starting5, setStarting5] = useState([]);
 
   useEffect(() => {
     async function loadUsers() {
-      const res = await fetch("http://localhost:5206/Leaderboard");
-      const data = await res.json();
-      setUsers(data);
-      console.log(data)
+      const usersRes = await fetch("http://localhost:5206/Leaderboard");
+      const users = await usersRes.json();
+
+      const playerIds = users[0].starting5.split(",");
+      console.log(playerIds);
+
+      for (const id of playerIds) {
+        const res = await fetch(`http://localhost:5206/Players/${id}`);
+        const player = await res.json();
+        starting5.push(player);
+      }
+      console.log(starting5);
+      setStarting5(starting5);
+      setUsers(users);
     }
     loadUsers();
   }, []);
-
-  // Sample data - replace with actual data from your backend
-  const topPlayers = [
-    { name: "Player 1", score: 100 },
-    { name: "Player 2", score: 95 },
-    { name: "Player 3", score: 90 },
-    { name: "Player 4", score: 85 },
-    { name: "Player 5", score: 80 },
-  ];
-
-  const leaderboardData = [
-    { rank: 1, name: "Mark", score: 100 },
-    { rank: 2, name: "John", score: 95 },
-    { rank: 3, name: "James", score: 90 },
-    { rank: 4, name: "Connor", score: 85 },
-    { rank: 5, name: "Tyler", score: 80 },
-    { rank: 6, name: "Tyler", score: 80 },
-    { rank: 7, name: "Tyler", score: 80 },
-    { rank: 8, name: "Tyler", score: 80 },
-    { rank: 9, name: "Tyler", score: 80 },
-    { rank: 10, name: "Tyler", score: 80 },
-  ];
 
   return (
     <div className="leaderboard-container">
@@ -50,9 +40,9 @@ function Leaderboard() {
         <h2 className="standings-subtitle">Today's Starting 5</h2>
 
         <div className="top-players-row">
-          {topPlayers.map((player, index) => (
+          {starting5.map((player, index) => (
             <div key={index} className="player-card">
-              <span className="player-name">{player.name}</span>
+              <span className="player-name">{player.firstName} {player.lastName}</span>
             </div>
           ))}
         </div>
@@ -62,7 +52,9 @@ function Leaderboard() {
             <div key={index} className="leaderboard-entry">
               <span className="rank-number">{index+1}</span>
               <div className="user-bar">
-                <span className="user-name">{entry.username}</span>
+                <span className="user-name">{entry.username}
+                  {index === 0 && <img className="kingIcon" src={kingIcon} alt="king"/>}
+                </span>
                 <span className="score">{entry.score}</span>
               </div>
             </div>
