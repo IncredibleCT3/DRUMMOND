@@ -811,3 +811,29 @@
 .tag:last-child {
   color: var(--pistons-red);
 }
+
+.loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 3rem;
+    min-height: 200px;
+}
+
+.loading p {
+    color: #333;
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.player-list .loading {
+    min-height: 300px;
+}
+
+.game-container > .loading {
+    min-height: 400px;
+    width: 100%;
+}
