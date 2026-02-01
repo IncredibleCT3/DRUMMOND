@@ -22,10 +22,10 @@ public class GameController : ControllerBase
         {
             // Get or create daily game using the seed (date string like "2026-01-24")
             var dailyGame = await _gameRepository.GetOrCreateTodayGameAsync(request.Seed);
-
+            
             // Return first round criteria AND the full game for cached state restoration
             var criteria = dailyGame.GetCriteriaForRound(1);
-
+            
             return Ok(new
             {
                 criteria,
@@ -55,20 +55,8 @@ public class GameController : ControllerBase
     {
         try
         {
-            // Validate player matches both criteria
-            var matchesCat1 = _gameRepository.MatchesCriteria(request.Player, request.Criteria.Category1);
-            var matchesCat2 = _gameRepository.MatchesCriteria(request.Player, request.Criteria.Category2);
-
-            if (!matchesCat1 || !matchesCat2)
-            {
-                return Ok(new 
-                { 
-                    success = false, 
-                    error = "This player does not match both categories!" 
-                });
-            }
-
-            // Calculate points
+            // Client-side already validated criteria match
+            // Backend only calculates points
             var points = _gameRepository.CalculatePoints(request.Player);
 
             // If game is complete, don't return next criteria
@@ -82,8 +70,8 @@ public class GameController : ControllerBase
                 });
             }
 
-            // Get daily game and determine next round
-            var dailyGame = await _gameRepository.GetOrCreateTodayGameAsync(DateTime.Today.ToString("yyyy-MM-dd"));
+            // Get daily game (will use same 1pm EST cutoff logic)
+            var dailyGame = await _gameRepository.GetOrCreateTodayGameAsync(request.Seed);
             
             // Calculate next round number
             // FilledPositions has positions already filled BEFORE this selection
@@ -118,4 +106,5 @@ public class SelectPlayerRequest
     public bool IsGameComplete { get; set; }
     public GameCriteria Criteria { get; set; } = new();
     public List<string> FilledPositions { get; set; } = new();
+    public string Seed { get; set; } = string.Empty;
 }
