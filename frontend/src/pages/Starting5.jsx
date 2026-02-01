@@ -435,7 +435,7 @@ function Starting5() {
 
             {loading && !criteria.category1 ? (
                 <div className="loading">
-                    <BounceLoader color="#1d42ba" size={100} />
+                    <BounceLoader color="#0066cc" size={60} />
                     <p>Loading game...</p>
                 </div>
             ) : (
@@ -470,16 +470,18 @@ function Starting5() {
                                 <span className="position-content">
                                     {lineup[position] ? (
                                         <>
-                                            <span className="player-name">
-                                                {lineup[position].firstName} {lineup[position].lastName}
-                                            </span>
+                                            <div className="position-content-row">
+                                                <span className="player-name">
+                                                    {lineup[position].firstName} {lineup[position].lastName}
+                                                </span>
+                                                <span className="player-points">+{lineup[position].points}</span>
+                                            </div>
                                             {lineup[position].tags && (
                                                 <div className="player-tags">
                                                     <span className="tag">{lineup[position].tags.category1}</span>
                                                     <span className="tag">{lineup[position].tags.category2}</span>
                                                 </div>
                                             )}
-                                            <span className="player-points">+{lineup[position].points}</span>
                                         </>
                                     ) : (
                                         <span className="select-text">Select Player</span>
@@ -557,7 +559,7 @@ function Starting5() {
                         <div className="player-list">
                             {selectingPlayer ? (
                                 <div className="loading">
-                                    <BounceLoader color="#1d42ba" size={50} />
+                                    <BounceLoader color="#0066cc" size={50} />
                                     <p>Validating selection...</p>
                                 </div>
                             ) : !searchQuery ? (
