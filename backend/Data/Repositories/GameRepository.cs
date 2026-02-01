@@ -88,13 +88,13 @@ public class GameRepository : IGameRepository
         _teamNames = await _playerRepository.GetAllTeamNamesAsync();
     }
 
-    // Get or create today's game from database
+    // Get or create today's game from database (based on 1pm EST cutoff)
     public async Task<DailyGame> GetOrCreateTodayGameAsync(string seed)
     {
-        var today = DateTime.Today;
+        var gameDate = GetGameDate();
         
-        // Check if game exists for today
-        var existingGame = await GetGameFromDatabaseAsync(today);
+        // Check if game exists for this game date
+        var existingGame = await GetGameFromDatabaseAsync(gameDate);
         if (existingGame != null)
         {
             // Validate that the game has all required criteria
@@ -103,7 +103,7 @@ public class GameRepository : IGameRepository
                 return existingGame;
             }
             // If game is invalid, delete it and create a new one
-            await DeleteGameByDateAsync(today);
+            await DeleteGameByDateAsync(gameDate);
         }
 
         // Generate new game with seed
@@ -113,9 +113,25 @@ public class GameRepository : IGameRepository
         await SaveDailyGameAsync(dailyGame);
         
         // Clean up old games
-        await DeleteOldGamesAsync(today);
+        await DeleteOldGamesAsync(gameDate);
         
         return dailyGame;
+    }
+
+    // Get the current game date based on 1pm EST cutoff
+    private DateTime GetGameDate()
+    {
+        // Get current time in EST
+        var estZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+        var estNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, estZone);
+        
+        // If it's before 1pm EST, use yesterday's date, otherwise use today's date
+        if (estNow.Hour < 13)
+        {
+            return estNow.AddDays(-1).Date;
+        }
+        
+        return estNow.Date;
     }
 
     private bool IsGameValid(DailyGame game)
@@ -270,94 +286,10 @@ public class GameRepository : IGameRepository
         }
     }
 
-    public bool MatchesCriteria(PlayerStats player, string criteria)
-    {
-        // Initialize team names if empty (lazy loading)
-        if (_teamNames.Count == 0)
-        {
-            _teamNames = _playerRepository.GetAllTeamNamesAsync().GetAwaiter().GetResult();
-        }
-        
-        // check if criteria is a team name
-        if (_teamNames.Contains(criteria))
-        {
-            return player.Teams?.Any(t => t == criteria) ?? false;
-        }
-
-        // check stat-based criteria
-        return criteria switch
-        {
-            "All-Stars" => player.AllStars > 0,
-            "MVP Winners" => player.Mvps > 0,
-            "Championship Winners" => player.Rings > 0,
-            "DPOY Winners" => player.Dpoys > 0,
-            "Rookie of the Year Winners" => player.RookieOfTheYear,
-            "6th Man Award Winners" => player.SixManAwards > 0,
-
-            "1+ Championship" => player.Rings >= 1,
-            "2+ Championships" => player.Rings >= 2,
-
-            "1+ All-Star Selection" => player.AllStars >= 1,
-            "3+ All-Star Selections" => player.AllStars >= 3,
-            "5+ All-Star Selections" => player.AllStars >= 5,
-
-            "25+ PPG Career" => player.Ppg >= 25,
-            "20+ PPG Career" => player.Ppg >= 20,
-            "15+ PPG Career" => player.Ppg >= 15,
-            "10+ PPG Career" => player.Ppg >= 10,
-            "5+ PPG Career" => player.Ppg >= 5,
-            "Under 5 PPG Career" => player.Ppg < 5,
-
-            "10+ RPG Career" => player.Rpg >= 10,
-            "8+ RPG Career" => player.Rpg >= 8,
-            "5+ RPG Career" => player.Rpg >= 5,
-            "3+ RPG Career" => player.Rpg >= 3,
-            "Under 3 RPG Career" => player.Rpg < 3,
-
-            "8+ APG Career" => player.Apg >= 8,
-            "5+ APG Career" => player.Apg >= 5,
-            "3+ APG Career" => player.Apg >= 3,
-            "1+ APG Career" => player.Apg >= 1,
-            "Under 1 APG Career" => player.Apg < 1,
-
-            "1.5+ SPG Career" => player.Spg >= 1.5m,
-            "1+ SPG Career" => player.Spg >= 1,
-            "0.5+ SPG Career" => player.Spg >= 0.5m,
-
-            "1.5+ BPG Career" => player.Bpg >= 1.5m,
-            "1+ BPG Career" => player.Bpg >= 1,
-            "0.5+ BPG Career" => player.Bpg >= 0.5m,
-
-            "Lottery Pick" => player.IsLottery == 1,
-            "Undrafted" => player.DraftYear == -1,
-
-            "Drafted in 2010s" => player.DraftYear >= 2010 && player.DraftYear <= 2019,
-            "Drafted in 2000s" => player.DraftYear >= 2000 && player.DraftYear <= 2009,
-            "Drafted in 1990s" => player.DraftYear >= 1990 && player.DraftYear <= 1999,
-            "Drafted Before 1990" => player.DraftYear < 1990 && player.DraftYear != -1,
-            "Drafted 2015 or Later" => player.DraftYear >= 2015,
-            "Drafted 2010 or Earlier" => player.DraftYear <= 2010 && player.DraftYear != -1,
-
-            "10+ Years in League" => player.YearsInLeague >= 10,
-            "5-9 Years in League" => player.YearsInLeague >= 5 && player.YearsInLeague <= 9,
-            "0-4 Years in League" => player.YearsInLeague >= 0 && player.YearsInLeague <= 4,
-            "Rookie (1 Year)" => player.YearsInLeague == 1,
-
-            "Went to a College with State in its Name" => !string.IsNullOrEmpty(player.College) && 
-                                                           player.College.Contains("State", StringComparison.OrdinalIgnoreCase),
-            "Went to a College with Michigan in its Name" => !string.IsNullOrEmpty(player.College) && 
-                                                              player.College.Contains("Michigan", StringComparison.OrdinalIgnoreCase),
-            "20+ PPG and 5+ APG" => player.Ppg >= 20 && player.Apg >= 5,
-            "10+ RPG and 1+ BPG" => player.Rpg >= 10 && player.Bpg >= 1,
-            "5+ APG and 1+ SPG" => player.Apg >= 5 && player.Spg >= 1,
-            "Champion Without All-Star" => player.Rings > 0 && player.AllStars == 0,
-
-            _ => false
-        };
-    }
-
     public int CalculatePoints(PlayerStats player)
     {
+        // TODO: Implement dynamic point calculation based on player rarity/difficulty
+        // For now, everyone gets 500 points
         int points = 500;
         return points;
     }
