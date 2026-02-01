@@ -115,7 +115,7 @@
   background: var(--bg-secondary);
   border: 2px solid var(--border-primary);
   border-radius: 8px;
-  padding: 20px;
+  padding: 15px;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -149,13 +149,17 @@
 .position-content {
   flex: 1;
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
 }
 
-.position-content .player-points {
-  margin-left: auto;
+.position-content-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 6px;
 }
 
 .select-text {
@@ -165,7 +169,7 @@
 }
 
 .player-name {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 500;
   color: var(--text-primary);
 }
@@ -447,79 +451,77 @@
   font-size: 1.1rem;
 }
 
-/* REPLACE your entire @media (max-width: 768px) block with this */
-
 @media (max-width: 768px) {
   .game-container {
-    padding: 12px;
+    padding: 8px;
   }
 
   .game-header {
-    margin-bottom: 18px;
+    margin-bottom: 10px;
   }
 
   .game-title {
-    font-size: 1.4rem;
-    text-shadow: 2px 2px 0px var(--pistons-blue), 5px 5px 0px rgba(0, 0, 0, 0.3);
+    font-size: 1.2rem;
+    text-shadow: 2px 2px 0px var(--pistons-blue), 4px 4px 0px rgba(0, 0, 0, 0.3);
   }
 
   .logout-button {
-    padding: 7px 14px;
-    font-size: 0.8rem;
+    padding: 6px 12px;
+    font-size: 0.75rem;
   }
 
   .categories-box {
-    padding: 14px;
-    margin-bottom: 14px;
+    padding: 10px;
+    margin-bottom: 10px;
   }
 
   .categories-title {
-    font-size: 0.75rem;
-    margin-bottom: 10px;
+    font-size: 0.7rem;
+    margin-bottom: 6px;
   }
 
   .categories-content {
     grid-template-columns: 1fr;
-    gap: 10px;
+    gap: 6px;
   }
 
   .category-label {
-    font-size: 0.7rem;
-    margin-bottom: 4px;
+    font-size: 0.65rem;
+    margin-bottom: 3px;
   }
 
   .category-value,
   .category-value-2 {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   .score-box {
-    margin-bottom: 18px;
+    margin-bottom: 10px;
   }
 
   .score-label {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
 
   .score-value {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
   }
 
   .lineup-section {
-    gap: 10px;
+    gap: 6px;
   }
 
   .position-row {
-    padding: 12px 14px;
+    padding: 8px 10px;
   }
 
   .position-label {
-    font-size: 1.1rem;
-    min-width: 50px;
+    font-size: 1rem;
+    min-width: 40px;
   }
 
   .position-content {
-    gap: 5px;
+    gap: 4px;
   }
 
   .position-content .player-name {
@@ -527,21 +529,21 @@
   }
 
   .position-content .player-points {
-    font-size: 1rem;
-  }
-
-  .select-text {
     font-size: 0.85rem;
   }
 
+  .select-text {
+    font-size: 0.75rem;
+  }
+
   .player-tags {
-    gap: 4px;
+    gap: 3px;
   }
 
   .tag {
-    font-size: 0.55rem;
-    padding: 2px 5px;
-    letter-spacing: 0;
+    font-size: 0.7rem !important;
+    padding: 2px 4px !important;
+    letter-spacing: 0 !important;
   }
 
   .modal-content {
@@ -794,7 +796,7 @@
 }
 
 .tag {
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -810,4 +812,30 @@
 
 .tag:last-child {
   color: var(--pistons-red);
+}
+
+.loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 3rem;
+    min-height: 200px;
+}
+
+.loading p {
+    color: #333;
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.player-list .loading {
+    min-height: 300px;
+}
+
+.game-container > .loading {
+    min-height: 400px;
+    width: 100%;
 }

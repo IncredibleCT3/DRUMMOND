@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import { BounceLoader } from 'react-spinners';
 import 'react-toastify/dist/ReactToastify.css';
 import '../css/Starting5.css'
 
@@ -34,6 +35,7 @@ function Starting5() {
     const [searchQuery, setSearchQuery] = useState('');
     const [incorrectPlayers, setIncorrectPlayers] = useState([]);
     const [showSurrenderModal, setShowSurrenderModal] = useState(false);
+    const [selectingPlayer, setSelectingPlayer] = useState(false);
 
     // save game state to localStorage
     const saveGameState = (state) => {
@@ -285,7 +287,7 @@ function Starting5() {
         const isGameComplete = getFilledPositions().length === 4;
 
         try {
-            setLoading(true);
+            setSelectingPlayer(true);
             const response = await fetch(`${API_URL}/game/select-player`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -310,7 +312,7 @@ function Starting5() {
                     pauseOnHover: true,
                     draggable: true,
                 });
-                setLoading(false);
+                setSelectingPlayer(false);
                 return;
             }
 
@@ -354,7 +356,7 @@ function Starting5() {
         } catch (err) {
             toast.error(err.message);
         } finally {
-            setLoading(false);
+            setSelectingPlayer(false);
         }
     };
 
@@ -432,7 +434,10 @@ function Starting5() {
             </div>
 
             {loading && !criteria.category1 ? (
-                <div className="loading">Loading game...</div>
+                <div className="loading">
+                    <BounceLoader color="#0066cc" size={60} />
+                    <p>Loading game...</p>
+                </div>
             ) : (
                 <>
                     <div className="categories-box">
@@ -465,16 +470,18 @@ function Starting5() {
                                 <span className="position-content">
                                     {lineup[position] ? (
                                         <>
-                                            <span className="player-name">
-                                                {lineup[position].firstName} {lineup[position].lastName}
-                                            </span>
+                                            <div className="position-content-row">
+                                                <span className="player-name">
+                                                    {lineup[position].firstName} {lineup[position].lastName}
+                                                </span>
+                                                <span className="player-points">+{lineup[position].points}</span>
+                                            </div>
                                             {lineup[position].tags && (
                                                 <div className="player-tags">
                                                     <span className="tag">{lineup[position].tags.category1}</span>
                                                     <span className="tag">{lineup[position].tags.category2}</span>
                                                 </div>
                                             )}
-                                            <span className="player-points">+{lineup[position].points}</span>
                                         </>
                                     ) : (
                                         <span className="select-text">Select Player</span>
@@ -550,8 +557,11 @@ function Starting5() {
                         </div>
 
                         <div className="player-list">
-                            {loading ? (
-                                <div className="loading">Loading...</div>
+                            {selectingPlayer ? (
+                                <div className="loading">
+                                    <BounceLoader color="#0066cc" size={50} />
+                                    <p>Validating selection...</p>
+                                </div>
                             ) : !searchQuery ? (
                                 <div className="search-prompt">Start typing to search for players...</div>
                             ) : filteredPlayers.length === 0 ? (
