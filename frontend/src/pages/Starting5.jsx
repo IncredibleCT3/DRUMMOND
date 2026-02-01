@@ -6,10 +6,23 @@ import '../css/Starting5.css'
 
 const API_URL = 'http://localhost:5206';
 
-// get today's date as a string (YYYY-MM-DD)
+// get today's game date based on 1pm EST cutoff
 const getTodayDate = () => {
-    const today = new Date();
-    return today.toISOString().split('T')[0];
+    const now = new Date();
+    
+    // Convert current time to EST
+    const estTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+    
+    // Get the current hour in EST
+    const estHour = estTime.getHours();
+    
+    // If it's before 1pm EST, use yesterday's date, otherwise use today's date
+    let gameDate = new Date(estTime);
+    if (estHour < 13) {
+        gameDate.setDate(gameDate.getDate() - 1);
+    }
+    
+    return gameDate.toISOString().split('T')[0];
 };
 
 // cache keys - its okay to expose them in client side
@@ -72,14 +85,6 @@ function Starting5() {
             }
         });
     };
-
-    // clear today's cache (for debugging/reset)
-    // const clearTodayCache = () => {
-    //     const todayDate = getTodayDate();
-    //     const todayKey = getCacheKey(todayDate);
-    //     localStorage.removeItem(todayKey);
-    //     window.location.reload();
-    // };
 
     // initialize game on component mount
     useEffect(() => {
@@ -249,6 +254,91 @@ function Starting5() {
         return categoryMap[round] || { category1: '', category2: '' };
     };
 
+    // Client-side validation of player against criteria
+    const validatePlayerCriteria = (player, criteria) => {
+        const matchesCat1 = checkCriteria(player, criteria.category1);
+        const matchesCat2 = checkCriteria(player, criteria.category2);
+        return matchesCat1 && matchesCat2;
+    };
+
+    const checkCriteria = (player, criteria) => {
+        // Check if criteria is a team name (teams are in player.teams array)
+        if (player.teams?.includes(criteria)) {
+            return true;
+        }
+
+        // Check stat-based criteria
+        switch (criteria) {
+            case "All-Stars": return player.allStars > 0;
+            case "MVP Winners": return player.mvps > 0;
+            case "Championship Winners": return player.rings > 0;
+            case "DPOY Winners": return player.dpoys > 0;
+            case "Rookie of the Year Winners": return player.rookieOfTheYear;
+            case "6th Man Award Winners": return player.sixManAwards > 0;
+
+            case "1+ Championship": return player.rings >= 1;
+            case "2+ Championships": return player.rings >= 2;
+
+            case "1+ All-Star Selection": return player.allStars >= 1;
+            case "3+ All-Star Selections": return player.allStars >= 3;
+            case "5+ All-Star Selections": return player.allStars >= 5;
+
+            case "25+ PPG Career": return player.ppg >= 25;
+            case "20+ PPG Career": return player.ppg >= 20;
+            case "15+ PPG Career": return player.ppg >= 15;
+            case "10+ PPG Career": return player.ppg >= 10;
+            case "5+ PPG Career": return player.ppg >= 5;
+            case "Under 5 PPG Career": return player.ppg < 5;
+
+            case "10+ RPG Career": return player.rpg >= 10;
+            case "8+ RPG Career": return player.rpg >= 8;
+            case "5+ RPG Career": return player.rpg >= 5;
+            case "3+ RPG Career": return player.rpg >= 3;
+            case "Under 3 RPG Career": return player.rpg < 3;
+
+            case "8+ APG Career": return player.apg >= 8;
+            case "5+ APG Career": return player.apg >= 5;
+            case "3+ APG Career": return player.apg >= 3;
+            case "1+ APG Career": return player.apg >= 1;
+            case "Under 1 APG Career": return player.apg < 1;
+
+            case "1.5+ SPG Career": return player.spg >= 1.5;
+            case "1+ SPG Career": return player.spg >= 1;
+            case "0.5+ SPG Career": return player.spg >= 0.5;
+
+            case "1.5+ BPG Career": return player.bpg >= 1.5;
+            case "1+ BPG Career": return player.bpg >= 1;
+            case "0.5+ BPG Career": return player.bpg >= 0.5;
+
+            case "Lottery Pick": return player.isLottery === 1;
+            case "Undrafted": return player.draftYear === -1;
+
+            case "Drafted in 2010s": return player.draftYear >= 2010 && player.draftYear <= 2019;
+            case "Drafted in 2000s": return player.draftYear >= 2000 && player.draftYear <= 2009;
+            case "Drafted in 1990s": return player.draftYear >= 1990 && player.draftYear <= 1999;
+            case "Drafted Before 1990": return player.draftYear < 1990 && player.draftYear !== -1;
+            case "Drafted 2015 or Later": return player.draftYear >= 2015;
+            case "Drafted 2010 or Earlier": return player.draftYear <= 2010 && player.draftYear !== -1;
+
+            case "10+ Years in League": return player.yearsInLeague >= 10;
+            case "5-9 Years in League": return player.yearsInLeague >= 5 && player.yearsInLeague <= 9;
+            case "0-4 Years in League": return player.yearsInLeague >= 0 && player.yearsInLeague <= 4;
+            case "Rookie (1 Year)": return player.yearsInLeague === 1;
+
+            case "Went to a College with State in its Name": 
+                return player.college && player.college.toLowerCase().includes("state");
+            case "Went to a College with Michigan in its Name": 
+                return player.college && player.college.toLowerCase().includes("michigan");
+
+            case "20+ PPG and 5+ APG": return player.ppg >= 20 && player.apg >= 5;
+            case "10+ RPG and 1+ BPG": return player.rpg >= 10 && player.bpg >= 1;
+            case "5+ APG and 1+ SPG": return player.apg >= 5 && player.spg >= 1;
+            case "Champion Without All-Star": return player.rings > 0 && player.allStars === 0;
+
+            default: return false;
+        }
+    };
+
     // Get filled positions
     const getFilledPositions = () => {
         return Object.entries(lineup)
@@ -284,10 +374,29 @@ function Starting5() {
         if (!selectedPosition) return;
         if (incorrectPlayers.includes(player.playerId)) return;
 
+        // CLIENT-SIDE VALIDATION FIRST
+        const isValid = validatePlayerCriteria(player, criteria);
+        
+        if (!isValid) {
+            // player doesn't match criteria - mark as incorrect immediately
+            setIncorrectPlayers(prev => [...prev, player.playerId]);
+            toast.error(player.firstName + " " + player.lastName + " does not match both categories!", {
+                position: "top-right",
+                autoClose: 1200,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+            });
+            return; // Don't make API call
+        }
+
         const isGameComplete = getFilledPositions().length === 4;
 
         try {
             setSelectingPlayer(true);
+            
+            // Only call API to calculate points if player is valid
             const response = await fetch(`${API_URL}/game/select-player`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -296,7 +405,8 @@ function Starting5() {
                     Position: selectedPosition,
                     IsGameComplete: isGameComplete,
                     Criteria: criteria,
-                    FilledPositions: getFilledPositions()
+                    FilledPositions: getFilledPositions(),
+                    Seed: getTodayDate()
                 })
             });
 
