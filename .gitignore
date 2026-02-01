@@ -9,7 +9,6 @@ coverage/
 .vite/
 .eslintcache
 .env
-.env.*
 .DS_Store
 Thumbs.db
 
